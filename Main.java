@@ -53,14 +53,18 @@ public class Main {
 
             for (int j = 0; j < quantum; j++) {
                 timePassed++;
-                ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                ///////DONT KNOW WHERE TO PUT THIS
-                    for (int k = i; k < processList.size(); k++) {
-                        if (!processList.get(k).isRunning() && timePassed > processList.get(k).getArrivalTime()) {
+
+                for (int k = i; k < processList.size(); k++) {
+                    if (processList.get(i).isRunning() && timePassed > processList.get(i).getArrivalTime()) {
                         processList.get(k).addTurnaroundTime();
                     }
                 }
-                ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+                for (int k = i; k < processList.size(); k++) {
+                    if (!processList.get(k).isRunning() && timePassed > processList.get(k).getArrivalTime()) {
+                        processList.get(k).addWaitTime();
+                    }
+                }
 
                 if (processList.get(i).getBurstTime() != 0) {
                     if (timePassed >= processList.get(i).getArrivalTime()) {
@@ -91,10 +95,18 @@ public class Main {
             //processList.remove(i);
             //i--;
         }
-        //System.out.println("Turnaround Times: ");
 
+        //System.out.println("Turnaround Times: ");
+        System.out.println("Turnaround Times:");
         for (int i = 0; i < processCompleted.size(); i++) {
             System.out.println(processList.get(i).processName + " " + processList.get(i).getTurnaroundTime());
+
+        }
+
+        System.out.println("\nWaiting Times:");
+        for (int i = 0; i < processCompleted.size(); i++) {
+
+            System.out.println(processList.get(i).processName + " " + processList.get(i).getWaitTime());
         }
         //System.out.println(timePassed);
 
