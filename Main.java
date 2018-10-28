@@ -1,30 +1,14 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package cosc460_p01;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
-/**
- *
- * @author Steven
- */
 public class Main {
 
     static int timePassed = 0;
-    static int waitTime = 0;
-
     static ArrayList<Process> processList = new ArrayList<>();
-    static ArrayList<String> processNames = new ArrayList<>();
-    static ArrayList<Integer> processAT = new ArrayList<>();
-    static ArrayList<Integer> processBT = new ArrayList<>();
-    static ArrayList<Integer> processTurnaroundTimes = new ArrayList<>();
     static ArrayList<String> processCompleted = new ArrayList<>();
-    static ArrayList<Integer> processWaitingTimes = new ArrayList<>();
     static int quantum;
 
     public static void main(String args[]) throws InterruptedException {
@@ -39,11 +23,7 @@ public class Main {
         addProcess("H", 4, 6);
 
         for (int i = 0; i < processList.size(); i++) {
-            processNames.add(processList.get(i).getProcessName());
-            processAT.add(processList.get(i).getArrivalTime());
-            processBT.add(processList.get(i).getBurstTime());
             processList.get(i).setRunningFalse();
-
         }
 
         Collections.sort(processList, new SortByAT());
@@ -89,21 +69,21 @@ public class Main {
         double avgTT;
         double sumTT = 0;
         for (int i = 0; i < processCompleted.size(); i++) {
-            System.out.println(processList.get(i).processName + " " + processList.get(i).getTurnaroundTime());
-            sumTT+=processList.get(i).getTurnaroundTime();
+            System.out.println(processList.get(i).processName + " " + (processList.get(i).getTurnaroundTime() - processList.get(i).getArrivalTime()));
+            sumTT += processList.get(i).getTurnaroundTime() - processList.get(i).getArrivalTime();
         }
-        avgTT = sumTT/processCompleted.size();
-        System.out.println("AVERAGE TURNAROUND TIME: "+avgTT);
-        
+        avgTT = sumTT / processCompleted.size();
+        System.out.println("AVERAGE TURNAROUND TIME: " + avgTT);
+
         double avgWT;
         double sumWT = 0;
         System.out.println("\nWaiting Times:");
         for (int i = 0; i < processCompleted.size(); i++) {
             System.out.println(processList.get(i).processName + " " + processList.get(i).getWaitTime());
-            sumWT+=processList.get(i).getWaitTime();
+            sumWT += processList.get(i).getWaitTime();
         }
-        avgWT = sumWT/processCompleted.size();
-        System.out.println("AVERAGE WAIT TIME: "+avgWT);
+        avgWT = sumWT / processCompleted.size();
+        System.out.println("AVERAGE WAIT TIME: " + avgWT);
     }
 
     static void addProcess(String name, int AT, int BT) {
