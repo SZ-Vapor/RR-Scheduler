@@ -13,7 +13,7 @@ public class Main {
 
     public static void main(String args[]) throws InterruptedException {
         quantum = 3;
-        addProcess("A", 0, 3);
+        addProcess("A", 3, 3);
         addProcess("B", 1, 6);
         addProcess("C", 2, 4);
         addProcess("D", 2, 2);
@@ -28,7 +28,9 @@ public class Main {
 
         Collections.sort(processList, new SortByAT());
         for (int i = 0; i < processList.size(); i++) {
-
+            while (timePassed < processList.get(i).getArrivalTime()) {
+                timePassed++;
+            }
             processList.get(i).setRunningTrue();
 
             for (int j = 0; j < quantum; j++) {
@@ -36,8 +38,12 @@ public class Main {
 
                 for (int k = i; k < processList.size(); k++) {
                     if (processList.get(i).isRunning() && timePassed > processList.get(i).getArrivalTime()) {
+
                         processList.get(k).addTurnaroundTime();
                     }
+                    // processList.get(k).addTurnaroundTime();
+                    //System.out.print(processList.get(k).getProcessName()+" ");//////////////////////////////////////////////////////This prints big list at top
+
                 }
 
                 for (int k = i; k < processList.size(); k++) {
@@ -50,6 +56,7 @@ public class Main {
                     if (timePassed >= processList.get(i).getArrivalTime()) {
                         processList.get(i).reduceBurstTime();
                         if (processList.get(i).getBurstTime() == 0) {
+                            processList.get(i).setCompletedTime(timePassed);
                             processCompleted.add(processList.get(i).getProcessName());
                             break;
                         }
@@ -63,14 +70,20 @@ public class Main {
 
             }
             processList.get(i).setRunningFalse();
+           // System.out.print("time " + timePassed + " ");
         }
 
         System.out.println("Turnaround Times:");
         double avgTT;
         double sumTT = 0;
+        double sumTT2 = 0;
         for (int i = 0; i < processCompleted.size(); i++) {
-            System.out.println(processList.get(i).processName + " " + (processList.get(i).getTurnaroundTime() - processList.get(i).getArrivalTime()));
+            //System.out.println(processList.get(i).processName + " " + (processList.get(i).getTurnaroundTime() - processList.get(i).getArrivalTime()));
+            //System.out.println(processList.get(i).processName + " " + (processList.get(i).getTurnaroundTime()));
+            System.out.println(processList.get(i).processName + " " + (processList.get(i).getCompletedTime() - processList.get(i).getArrivalTime()));
             sumTT += processList.get(i).getTurnaroundTime() - processList.get(i).getArrivalTime();
+            //sumTT2 += processList.get(i).getTurnaroundTime();
+            
         }
         avgTT = sumTT / processCompleted.size();
         System.out.println("AVERAGE TURNAROUND TIME: " + avgTT);
