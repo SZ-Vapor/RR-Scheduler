@@ -71,46 +71,39 @@ public class Main {
                         processList.get(i).reduceBurstTime();
                         if (processList.get(i).getBurstTime() == 0) {
                             processCompleted.add(processList.get(i).getProcessName());
-                            processTurnaroundTimes.add(timePassed);
                             break;
                         }
                     }
 
-                } else {
-                    processCompleted.add(processList.get(i).getProcessName());
-                    processTurnaroundTimes.add(timePassed);
-                    break;
                 }
 
             }
             if (processList.get(i).getBurstTime() > 0) {
                 processList.add(processList.get(i));
-                //processList.remove(i);
-                //i--;
 
             }
             processList.get(i).setRunningFalse();
-
-            //System.out.println(processList.get(i).getProcessName() + " " + processList.get(i).getArrivalTime() + " " + processList.get(i).getBurstTime());
-            //processList.remove(i);
-            //i--;
         }
 
-        //System.out.println("Turnaround Times: ");
         System.out.println("Turnaround Times:");
+        double avgTT;
+        double sumTT = 0;
         for (int i = 0; i < processCompleted.size(); i++) {
             System.out.println(processList.get(i).processName + " " + processList.get(i).getTurnaroundTime());
-
+            sumTT+=processList.get(i).getTurnaroundTime();
         }
-
+        avgTT = sumTT/processCompleted.size();
+        System.out.println("AVERAGE TURNAROUND TIME: "+avgTT);
+        
+        double avgWT;
+        double sumWT = 0;
         System.out.println("\nWaiting Times:");
         for (int i = 0; i < processCompleted.size(); i++) {
-
             System.out.println(processList.get(i).processName + " " + processList.get(i).getWaitTime());
+            sumWT+=processList.get(i).getWaitTime();
         }
-        //System.out.println(timePassed);
-
-        System.out.println();
+        avgWT = sumWT/processCompleted.size();
+        System.out.println("AVERAGE WAIT TIME: "+avgWT);
     }
 
     static void addProcess(String name, int AT, int BT) {
